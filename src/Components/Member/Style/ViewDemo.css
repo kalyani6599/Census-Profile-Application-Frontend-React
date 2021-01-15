@@ -1,0 +1,13 @@
+.card {
+  /* max-width: 18rem !important; */
+  margin: 40px 70px;
+}
+.icon {
+  margin: 10px !important;
+}
+.p-icon {
+  text-align: end !important;
+}
+.icon-head {
+  text-align: center !important;
+}

@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
-import UserService from '../../Services/MemberService';
-
+import ApplicationService from '../../Services/ApplicationService';
+import UserService from '../../Services/UserService';
+let userId;
 class CreateUserComponent extends Component {
+    
     constructor(props) {
         super(props);
         this.state = {
-                id:'',
+                // userId:'',
                 userName:'',
                 password:'',
                 role:'',
+                
             }
+            
 
             this.changeUserNameHandler = this.changeUserNameHandler.bind(this);
             this.changePasswordHandler = this.changePasswordHandler.bind(this);
@@ -17,18 +21,33 @@ class CreateUserComponent extends Component {
             this.saveUser = this.saveUser.bind(this);
 
         }
+        
         saveUser = (e)=>{
             e.preventDefault();
             let user ={ 
-                id: null, userName: this.state.userName, 
+                userName: this.state.userName, 
                 password: this.state.password,
-                role: this.state.role
+                role: this.state.role ==="admin"? 0: 1 
+                
             };
 
             console.log(JSON.stringify(user));
-            UserService.createUser(user).then(res =>{
-            this.props.history.push('/user');
-            })
+            
+            UserService.createUser(user).then(userResponse =>{
+                this.props.history.push('/');
+                console.log(JSON.stringify(userResponse))
+                console.log(userResponse.data.userId)  
+                userId=userResponse.data.userId;
+                console.log(userId);           
+                // console.log(userResponse.body);    
+                }).then(response=>{
+                    console.log(userId);              
+                    ApplicationService.createApplication(userId).then(applicationResponse=>{
+                    console.log(JSON.stringify(applicationResponse));
+                    
+                    })
+                })
+            
          }  
 
             
@@ -56,19 +75,28 @@ class CreateUserComponent extends Component {
                             <div className = "card col-md-6 offset-md-3 offset-md-3">
                                 <h3 className="text-center">Registration</h3>
                                 <div className = "card-body">
-                                    <form>
+                                    <form className="needs-validation">
                                         <div className="form-group"> 
                                             <label>Enter User Name</label>
-                                            <input placeholder="User Name" name="userName"
-                                                className="form-control" value = {this.state.userName} 
-                                                onChange = {this.changeUserNameHandler}/>
+                                            <i class="fas fa-ad fa-5x"></i>
+                                            <input 
+                                            placeholder="User Name" 
+                                            name="userName"
+                                            className="form-control" 
+                                            value = {this.state.userName} 
+                                            onChange = {this.changeUserNameHandler}
+                                            required/>
                                         </div>
                                         
                                         <div className="form-group"> 
                                             <label>Enter Password</label>
-                                            <input placeholder="Password" name="password"
-                                                className="form-control" value = {this.state.password} 
-                                                onChange = {this.changePasswordHandler}/>
+                                            <input 
+                                            placeholder="Password" 
+                                            name="password"
+                                            className="form-control" 
+                                            value = {this.state.password} 
+                                            onChange = {this.changePasswordHandler}
+                                            required/>
                                         </div>
                                         <div className="form-group"> 
                                         <label>Choose Role:</label>
@@ -88,7 +116,7 @@ class CreateUserComponent extends Component {
                                          </div>
                                     </div>
                                
-                                    <button className = "btn btn-success" onClick = {this.saveUser}>Register</button>
+                                    <button className = "btn btn-success" href="#" onClick = {this.saveUser}>Register</button>
                                     <button className = "btn btn-danger" onClick = {this.cancel.bind(this)} style = {{marginLeft: "10px"}}>Cancel</button>
                                     </form>
                                 </div>

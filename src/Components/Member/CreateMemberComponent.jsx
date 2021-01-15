@@ -88,15 +88,19 @@ class CreateMemberComponent extends Component {
                                 <form>
                                     <div className="form-group"> 
                                         <label>Enter First Name</label>
-                                        <input placeholder="First Name" name="firstName"
-                                            className="form-control" value = {this.state.firstName} 
-                                            onChange = {this.changeMemberFirstNameHandler}/>
+                                        <input 
+                                        placeholder="First Name" 
+                                        name="firstName"
+                                        className="form-control" 
+                                        value = {this.state.firstName} 
+                                        onChange = {this.changeMemberFirstNameHandler} />
                                     </div>
                                     
                                     <div className="form-group"> 
                                         <label>Enter Last Name</label>
                                         <input placeholder="Last Name" name="lastName"
-                                            className="form-control" value = {this.state.lastName} 
+                                            className="form-control" 
+                                            value = {this.state.lastName} 
                                             onChange = {this.changeMemberLastNameHandler}/>
                                     </div>
 

@@ -1,0 +1,29 @@
+/* title  */
+
+h3 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2.5rem;
+  line-height: 1.5;
+  color: black;
+}
+
+.logo-image {
+  width: 400px;
+  height: 152px;
+  margin-left: 60px;
+}
+.sign-in {
+  width: 60%;
+  height: 100%;
+  margin: 0 auto;
+}
+.register-button {
+  margin-left: 12px;
+}
+.form-div {
+  margin: 50px auto;
+}
+.h3-div {
+  width: 450px !important;
+  margin: 100px auto;
+}

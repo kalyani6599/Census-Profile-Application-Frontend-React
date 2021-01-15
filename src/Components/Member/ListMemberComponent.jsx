@@ -17,6 +17,7 @@ class ListMemberComponent extends Component{
         MemberService.getMember()
         .then((res) => {
             this.setState({memberInformation: res.data});
+            
         });
     }
 
