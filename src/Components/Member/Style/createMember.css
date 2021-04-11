@@ -1,0 +1,90 @@
+.create_member {
+  background-color: #ccffee;
+  width: 100%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.createForm {
+  width: 80%;
+  margin: auto;
+  background-color: white;
+  margin-top: 10px;
+}
+
+.createForm_body {
+  width: 60%;
+  margin: auto;
+}
+.create_text-center {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2.5rem;
+  line-height: 1.5;
+  color: white;
+  margin-left: 5px !important;
+  background-color: #12193b !important;
+  text-align: center;
+  margin-top: auto;
+}
+
+.create_btn:hover {
+  transform: translatey(10px);
+  box-shadow: none;
+  background-image: linear-gradient(135deg, #336699 0%, #00ffcc 100%);
+}
+
+.create_btn:active {
+  opacity: 0.5;
+}
+
+.create_btn {
+  border-radius: 50px;
+  width: 150px;
+  height: 60px;
+  margin-bottom: 100px;
+  margin-top: 50px;
+}
+
+.create_member_Buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.create_btn-responsive {
+  white-space: normal !important;
+  word-wrap: break-word;
+  margin-left: 12px;
+}
+
+.member {
+  font-family: "Montserrat", sans-serif;
+  width: 100%;
+}
+
+.radio {
+  white-space: wrap;
+}
+
+input[type="radio"] {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+@media screen and (max-width: 600px) {
+  .btn {
+    border-radius: 30px;
+    width: 100px;
+    height: 30px;
+    font-size: small;
+    white-space: normal !important;
+    word-wrap: break-word;
+  }
+
+  .create_member {
+    font-size: 15px;
+  }
+}

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { handleResponse, handleError } from "./apiUtils";
+
 
 const USER_API_BASE_URL = "http://localhost:8081/api/user";
 
@@ -10,8 +10,7 @@ class UserService {
 
     }
     getUser() {
-        return axios.get(USER_API_BASE_URL).then(handleResponse)
-            .catch(handleError);
+        return axios.get(USER_API_BASE_URL)
     }
 }
 

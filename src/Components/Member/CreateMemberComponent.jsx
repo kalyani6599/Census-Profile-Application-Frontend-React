@@ -1,214 +1,283 @@
 import React, { Component } from 'react';
 import MemberService from '../../Services/MemberService';
+import './Style/createMember.css';
+import Navigation from '../Header/Navigation';
+
+const initialState = {
+    applicationId: "",
+    firstName: "",
+    lastName: "",
+    gender: "",
+    dob: "",
+    educationDetails: "",
+    maritalStatus: "",
+    relationship: "",
+
+    firstNameError: "",
+    lastNameError: "",
+    genderError: "",
+    dobError: "",
+    educationDetailsError: "",
+    maritalStatusError: "",
+    relationshipError: ""
+}
 
 class CreateMemberComponent extends Component {
+
+    state = initialState;
     constructor(props) {
         super(props);
-        this.state = {
-                id:'',
-                firstName:'',
-                lastName:'',
-                age:'',
-                gender:'',
-                dob: '',
-                educationDetails:'',
-                maritalStatus:'',
-                relationship: ''
-        
-        }
-        this.changeMemberFirstNameHandler= this.changeMemberFirstNameHandler.bind(this);
-        this.changeMemberLastNameHandler= this.changeMemberLastNameHandler.bind(this);
-        this.changeAgeHandler = this.changeAgeHandler.bind(this);
-        this.changeGenderHandler = this.changeGenderHandler.bind(this);
-        this.changeEducationDetailsHandler = this.changeEducationDetailsHandler.bind(this);
-        this.changeDobHandler= this.changeDobHandler.bind(this);
-        this.changeMaritalStatusHandler = this.changeMaritalStatusHandler.bind(this);
-        this.changeRelationshipHandler = this.changeRelationshipHandler.bind(this);
-       
+
+
         this.saveMemberInformation = this.saveMemberInformation.bind(this);
-    }     
+    }
 
-    saveMemberInformation = (e)=>{
+    componentDidMount() {
+        if (this.props.location.application) {
+            this.setState({
+                applicationId: this.props.location.application.applicationId,
+            })
+        }
+    }
+
+    handleChange = event => {
+        const isCheckbox = event.target.type === "checkbox";
+        this.setState({
+            [event.target.name]: isCheckbox
+                ? event.target.checked
+                : event.target.value
+        });
+    };
+
+    validate = () => {
+        let firstNameError = "";
+        let lastNameError = "";
+        let genderError = "";
+        let dobError = "";
+        let educationDetailsError = "";
+        let maritalStatusError = "";
+        let relationshipError = "";
+
+        var name = /^[a-zA-Z]+$/;
+        var date = /^[0-9]{4}[-][0-9]{2}[-][0-9]{2}/;
+        var currDate = new Date().toISOString().slice(0, 10).toString();
+
+        if (!this.state.firstName) {
+            firstNameError = "First Name Cannot be empty";
+        } else if (this.state.firstName.length < 4) {
+            firstNameError = "first name must be atleast 3 characters long";
+        }
+        else if (!name.test(this.state.firstName)) {
+            firstNameError = "First Name must contain only alphabets ";
+        }
+
+        if (!this.state.lastName) {
+            lastNameError = "last Name Cannot be empty";
+        } else if (this.state.lastName.length < 4) {
+            lastNameError = "Last name must be atleast 3 characters long";
+        }
+        else if (!name.test(this.state.lastName)) {
+            lastNameError = "Last Name must contain only alphabets ";
+        }
+
+        if (!this.state.gender) {
+            genderError = "Gender Cannot be Empty.. Please select any one gender";
+        }
+
+        if (!this.state.dob) {
+            dobError = "Date of Birth Cannot be empty.. Please fill details";
+        } else if (!date.test(this.state.dob)) {
+            dobError = "Please Enter Date in [yyyy-DD-MM] format";
+        } else if (currDate === this.state.dob) {
+            dobError = "Current Date and BirthDate Cannot be Same !";
+        }
+
+        if (!this.state.educationDetails) {
+            educationDetailsError = "Education Details Cannot be Empty.. Please fill Education Details";
+        }
+
+        if (!this.state.maritalStatus) {
+            maritalStatusError = "Marital Status Cannot be Empty... Please select any one option";
+        }
+
+        if (!this.state.relationship) {
+            relationshipError = "Relationship Cannot be Empty... Please select any one option";
+        }
+
+        if (firstNameError || lastNameError || genderError || dobError || educationDetailsError || maritalStatusError || relationshipError) {
+            this.setState({ firstNameError, lastNameError, genderError, dobError, educationDetailsError, maritalStatusError, relationshipError });
+            return false;
+        }
+        return true;
+    };
+
+    saveMemberInformation = (e) => {
+        console.log("before passing to create member api application is:" + this.state.applicationId)
         e.preventDefault();
-        let memberInformation ={ id: null, firstName: this.state.firstName, 
-            LastName: this.state.LastName,age: this.state.age,gender: this.state.gender,
-            dob: this.state.dob,educationDetails: this.state.educationDetails, 
-            maritalStatus: this.state.maritalStatus, relationship: this.state.relationship
-        };
-        console.log(JSON.stringify(memberInformation));
-        MemberService.createMember(memberInformation).then(res =>{
-            this.props.history.push('/member');
-        })
-    }  
+        const isValid = this.validate();
+        if (isValid) {
+            alert(`${this.state.firstName} ${this.state.lastName} Mmeber Added Successfully !!!!`)
+            let member = {
 
-    cancel(){
+                firstName: this.state.firstName,
+                lastName: this.state.lastName,
+                gender: this.state.gender,
+                dob: this.state.dob,
+                educationDetails: this.state.educationDetails,
+                maritalStatus: this.state.maritalStatus,
+                relationship: this.state.relationship
+
+            };
+            console.log("member infor response" + JSON.stringify(member));
+            MemberService.createMember(this.state.applicationId, member)
+                .then(res => {
+                    this.props.history.push('/member');
+                })
+
+            //clear the form
+            this.setState(initialState);
+
+        }
+    }
+
+    cancel() {
         this.props.history.push('/member');
     }
 
-    changeMemberFirstNameHandler = (event) =>{
-        this.setState({firstName: event.target.value});
-    }
-
-    changeMemberLastNameHandler = (event) =>{
-        this.setState({lastName: event.target.value});
-    }
-
-    changeAgeHandler = (event) =>{
-        this.setState({age: event.target.value});
-    }
-
-    changeGenderHandler = (event) =>{
-        this.setState({gender: event.target.value});
-    }
-
-    changeDobHandler = (event) =>{
-        this.setState({dob: event.target.value});
-    }
-
-    changeEducationDetailsHandler = (event) =>{
-        this.setState({educationDetails: event.target.value});
-    }
-
-    changeMaritalStatusHandler = (event) =>{
-        this.setState({maritalStatus: event.target.value});
-    }
-
-    changeRelationshipHandler = (event) =>{
-        this.setState({relationship: event.target.value});
-    }
 
     render() {
         return (
-            <div>               
-                <div className="container">
-                    <div className="row">
-                        <div className = "card col-md-6 offset-md-3 offset-md-3">
-                            <h3 className="text-center">Add Employee</h3>
-                            <div className = "card-body">
-                                <form>
-                                    <div className="form-group"> 
-                                        <label>Enter First Name</label>
-                                        <input 
-                                        placeholder="First Name" 
-                                        name="firstName"
-                                        className="form-control" 
-                                        value = {this.state.firstName} 
-                                        onChange = {this.changeMemberFirstNameHandler} />
-                                    </div>
-                                    
-                                    <div className="form-group"> 
-                                        <label>Enter Last Name</label>
-                                        <input placeholder="Last Name" name="lastName"
-                                            className="form-control" 
-                                            value = {this.state.lastName} 
-                                            onChange = {this.changeMemberLastNameHandler}/>
-                                    </div>
-
-                                    <div className="form-group"> 
-                                        <label>Enter age</label>
-                                        <input placeholder="Age" name="age"
-                                            className="form-control" value = {this.state.age} 
-                                            onChange = {this.changeAgeHandler}/>
-                                    </div>
-                                    
+            <div>
+                <Navigation />
+                <div className="member">
+                    <h3 className="create_text-center">Add Member</h3>
+                    <div className="create_member">
+                        <div className="createForm">
+                            <div className="createForm_body">
+                                <form >
                                     <div className="form-group">
-                                        <label>Select Gender:</label>
-                                        
+                                        <label><b>Enter First Name:</b></label>
+                                        <input placeholder="First Name" name="firstName"
+                                            className="form-control" value={this.state.firstName}
+                                            onChange={this.handleChange} />
+                                        <div style={{ fontSize: 12, color: "red" }}> {this.state.firstNameError}</div>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label><b>Enter Last Name:</b></label>
+                                        <input placeholder="Last Name" name="lastName"
+                                            className="form-control" value={this.state.lastName}
+                                            onChange={this.handleChange} />
+                                        <div style={{ fontSize: 12, color: "red" }}> {this.state.lastNameError} </div>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label><b> Select Gender:</b></label>
+
                                         <div class="radio">
                                             <label>
-                                            <input type="radio"value="Female"
-                                            checked={this.state.gender === "Female"}
-                                            onChange = {this.changeGenderHandler}/>Female
+                                                <input type="radio" value="1" name="gender"
+                                                    checked={this.state.gender === "1"}
+                                                    onChange={this.handleChange} />Female
+                                            </label>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>
+                                                <input type="radio" value="0" name="gender"
+                                                    checked={this.state.gender === "0"}
+                                                    onChange={this.handleChange} />Male
+                                            </label>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>
+                                                <input type="radio" value="2" name="gender"
+                                                    checked={this.state.gender === "2"}
+                                                    onChange={this.handleChange} />Other
                                             </label>
 
-                                            <label>
-                                            <input type="radio"value="Male"
-                                            checked={this.state.gender === "Male"}
-                                            onChange = {this.changeGenderHandler}/>Male
-                                            </label>
-                                        
-                                            <label>
-                                            <input type="radio"value="Other"
-                                            checked={this.state.gender === "Other"}
-                                            onChange = {this.changeGenderHandler}/>Other
-                                            </label>
+                                            <div style={{ fontSize: 12, color: "red" }}> {this.state.genderError}  </div>
                                         </div>
-                                    
-                                    </div> 
+
+                                    </div>
 
 
-                                    <div className="form-group"> 
-                                        <label>Enter BirthDate(yyyy-mm-dd)</label>
+                                    <div className="form-group">
+                                        <label><b>Enter BirthDate(yyyy-mm-dd):</b></label>
                                         <input placeholder="BirthDate" name="dob"
-                                            className="form-control" value = {this.state.dob} 
-                                            onChange = {this.changeDobHandler}/>
+                                            className="form-control" value={this.state.dob}
+                                            onChange={this.handleChange} />
+                                        <div style={{ fontSize: 12, color: "red" }}> {this.state.dobError}  </div>
                                     </div>
 
 
 
-                                    <div className="form-group"> 
-                                        <label>Enter Education Details</label>
+                                    <div className="form-group">
+                                        <label><b>Enter Education Details:</b></label>
                                         <input placeholder="Education Details" name="educationDetails"
-                                            className="form-control" value = {this.state.educationDetails} 
-                                            onChange = {this.changeEducationDetailsHandler}/>
+                                            className="form-control" value={this.state.educationDetails}
+                                            onChange={this.handleChange} />
+                                        <div style={{ fontSize: 12, color: "red" }}> {this.state.educationDetailsError} </div>
                                     </div>
 
-                                    <div className="form-group"> 
-                                        <label>Choose Maritial Status:</label>
-                                        
+                                    <div className="form-group">
+                                        <label><b>Choose Maritial Status:</b></label>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
                                         <div class="radio">
                                             <label>
-                                            <input type="radio"value="Married"
-                                            checked={this.state.maritalStatus === "Married"}
-                                            onChange={this.changeMaritalStatusHandler}/>Married
+                                                <input type="radio" value="0" name="maritalStatus"
+                                                    checked={this.state.maritalStatus === "0"}
+                                                    onChange={this.handleChange} />Married
                                             </label>
-                                    
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>
-                                            <input type="radio"value="Unmarried"
-                                            checked={this.state.maritalStatus === "Unmarried"}
-                                            onChange={this.changeMaritalStatusHandler}/>Unmarried
+                                                <input type="radio" value="1" name="maritalStatus"
+                                                    checked={this.state.maritalStatus === "1"}
+                                                    onChange={this.handleChange} />Unmarried
                                             </label>
-                                         </div>
+                                            <div style={{ fontSize: 12, color: "red" }}> {this.state.maritalStatusError}  </div>
+                                        </div>
                                     </div>
 
-                                    <div className="form-group"> 
-                                        <label>Choose Relationship:</label>
-                                        
+                                    <div className="form-group">
+                                        <label><b>Choose Relationship:</b></label>
+
                                         <div class="radio">
                                             <label>
-                                            <input type="radio"value="Mother"
-                                            checked={this.state.relationship === "Mother"}
-                                            onChange={this.changeRelationshipHandler}/>Mother
+                                                <input type="radio" value="0" name="relationship"
+                                                    checked={this.state.relationship === "0"}
+                                                    onChange={this.handleChange} />Mother
                                             </label>
-                                    
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>
-                                            <input type="radio"value="Father"
-                                            checked={this.state.relationship === "Father"}
-                                            onChange={this.changeRelationshipHandler}/>Father
+                                                <input type="radio" value="1" name="relationship"
+                                                    checked={this.state.relationship === "1"}
+                                                    onChange={this.handleChange} />Father
                                             </label>
-                                    
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>
-                                            <input type="radio"value="Son"
-                                            checked={this.state.relationship === "Son"}
-                                            onChange={this.changeRelationshipHandler}/>Son
+                                                <input type="radio" value="2" name="relationship"
+                                                    checked={this.state.relationship === "2"}
+                                                    onChange={this.handleChange} />Son
                                             </label>
-                                    
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>
-                                            <input type="radio"value="Daughter"
-                                            checked={this.state.relationship === "Daughter"}
-                                            onChange={this.changeRelationshipHandler}/>Daughter
+                                                <input type="radio" value="3" name="relationship"
+                                                    checked={this.state.relationship === "3"}
+                                                    onChange={this.handleChange} />Daughter
                                             </label>
+                                            <div style={{ fontSize: 12, color: "red" }}> {this.state.relationshipError}  </div>
                                         </div>
 
-                                    </div> 
-                                    
-                                    <button className = "btn btn-success" onClick = {this.saveMemberInformation}>Save</button>
-                                    <button className = "btn btn-danger" onClick = {this.cancel.bind(this)} style = {{marginLeft: "10px"}}>Cancel</button>
-                                    </form>
+
+                                    </div>
+                                    <div className="create_member_Buttons">
+
+                                        <button className="create_btn btn-success" onClick={this.saveMemberInformation} ><i class="far fa-check-circle"></i>&nbsp;&nbsp;Save</button>
+                                        <button className="create_btn btn-danger" onClick={this.cancel.bind(this)}><i class="far fa-times-circle"></i>&nbsp;&nbsp;Cancel</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                 </div>
+                </div>
             </div>
         );
     }

@@ -1,0 +1,16 @@
+.view_member {
+  display: "flex";
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #ccffee !important;
+  height: 100vh;
+}
+.view_member_text-center {
+  text-align: center;
+  background-color: #12193b !important;
+  color: white;
+  margin-left: -100px !important;
+  margin-top: -20px;
+  font-size: xx-large;
+}

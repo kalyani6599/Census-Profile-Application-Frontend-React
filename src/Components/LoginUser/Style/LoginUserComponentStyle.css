@@ -1,29 +1,55 @@
-/* title  */
-
-h3 {
-  font-family: "Montserrat", sans-serif;
-  font-size: 2.5rem;
-  line-height: 1.5;
-  color: black;
-}
-
 .logo-image {
   width: 400px;
   height: 152px;
-  margin-left: 60px;
+  margin-left: -20px !important;
 }
-.sign-in {
-  width: 60%;
-  height: 100%;
-  margin: 0 auto;
-}
+
 .register-button {
   margin-left: 12px;
 }
-.form-div {
-  margin: 50px auto;
+
+h4 {
+  margin-top: 5px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 2.5rem;
+  line-height: 1.5;
+  color: white;
+  background-color: #12193b !important;
+  text-align: center;
 }
-.h3-div {
-  width: 450px !important;
-  margin: 100px auto;
+
+h3 {
+  font-size: 20px;
+  margin-left: 60px !important;
+  color: white;
+  padding: 10px;
+  background-color: #12193b !important;
+  margin-top: 300px;
+}
+
+.col-lg-6.form-div {
+  margin-top: 20px;
+  background-color: white;
+}
+
+.loginUser_main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: -300px !important;
+  width: 70%;
+  float: right;
+  margin-top: -300px !important;
+}
+
+.intro {
+  width: 30%;
+  padding: 10px;
+}
+
+@media screen and(max-width: 650px) {
+  .infoH3 {
+    width: 800px;
+  }
 }

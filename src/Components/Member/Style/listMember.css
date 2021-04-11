@@ -1,0 +1,65 @@
+.list_member {
+  width: 100%;
+  margin: auto;
+  padding: 20px;
+  background-color: #ccffee;
+}
+
+.list_member_tableB {
+  background-color: #fff;
+  width: 100%;
+  margin: auto;
+  overflow-x: auto;
+}
+
+.list_member_tRow th {
+  width: 400px;
+  text-align: center;
+  font-size: 20px;
+  border: 1px solid black;
+}
+.list_member_tRow tr td {
+  width: 400px;
+  text-align: center;
+  font-size: 20px;
+  border: 1px solid black;
+}
+.list_member_heading {
+  text-align: center;
+  background-color: #12193b;
+  color: white;
+  height: 7vh;
+  margin: auto;
+}
+.list_member_btn {
+  float: right;
+  margin-top: 10px;
+  width: 150px;
+  height: 60px;
+  border-radius: 50px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: white;
+  background-color: black;
+  transition: all 0.3s ease-in-out;
+}
+
+.list_member_btn:hover {
+  transform: translatey(10px);
+  box-shadow: none;
+}
+
+@media screen and (max-width: 600px) {
+  .list_member_tRow th {
+    font-size: 15px;
+    margin: 100px;
+  }
+
+  .list_member_btn {
+    width: 80px;
+    font-size: 15px;
+    border-radius: 20px;
+  }
+}

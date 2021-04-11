@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { handleResponse, handleError } from "./apiUtils";
+
 
 const MEMBER_API_BASE_URL = "http://localhost:8081/api/member";
 
@@ -8,15 +8,17 @@ class MemberService {
         return axios.get(MEMBER_API_BASE_URL)
     }
 
-    createMember(memberInformation) {
-        return axios.post(MEMBER_API_BASE_URL, memberInformation)
+    createMember(applicationId, memberInformation) {
+        return axios.post(MEMBER_API_BASE_URL + '/' + applicationId, memberInformation)
     }
 
     getMemberById(memberId) {
         return axios.get(MEMBER_API_BASE_URL + '/' + memberId)
     }
-
-    updateMember(memberInformation, memberId) {
+    getMemberByFirstName(firstName) {
+        return axios.get(MEMBER_API_BASE_URL + '/' + firstName)
+    }
+    updateMember(memberId, memberInformation) {
         return axios.put(MEMBER_API_BASE_URL + '/' + memberId, memberInformation)
     }
 

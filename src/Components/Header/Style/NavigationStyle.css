@@ -1,0 +1,53 @@
+.nav-link {
+  color: #000000 !important;
+}
+
+.container.p-4 {
+  max-width: 100% !important;
+  background-color: rgb(64, 212, 188) !important;
+}
+
+.navbtn {
+  background-color: black !important;
+  color: white !important;
+}
+
+.nav-item {
+  padding: 0 18px;
+  color: #000000;
+  font-family: "Montserrat", sans-serif !important;
+}
+.nav-link {
+  font-family: "Montserrat", sans-serif !important;
+  font-size: 1.2rem;
+}
+
+.navbar-nav a:hover {
+  background-color: rgb(229, 238, 243);
+  color: black;
+}
+
+.form-div {
+  margin: 50px auto;
+}
+
+.Navigation {
+  margin-top: -10px !important;
+}
+@media screen and (max-width: 480px) {
+  .main-logo {
+    font-size: 20px !important;
+  }
+  .navbtn {
+    border-radius: 30px;
+    width: auto;
+    height: 30px;
+    font-size: small;
+    white-space: normal !important;
+    word-wrap: break-word;
+  }
+
+  .form-control {
+    display: block;
+  }
+}
